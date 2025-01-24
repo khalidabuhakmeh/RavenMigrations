@@ -46,5 +46,26 @@ namespace Raven.Migrations
         /// If <see cref="PreventSimultaneousMigrations"/> is enabled, any attempt to run migrations during this time will fail.
         /// </summary>
         public TimeSpan SimultaneousMigrationTimeout { get; set; }
+
+        /// <summary>
+        /// What to do when migration lock cannot be obtained. Default behavior is to skip running migrations.
+        /// </summary>
+        public SimultaneousMigrationBehavior SimultaneousMigrationBehavior { get; set; } = SimultaneousMigrationBehavior.Skip;
+    }
+
+    /// <summary>
+    /// Behavior options when attempt to run simultaneous migrations.
+    /// </summary>
+    public enum SimultaneousMigrationBehavior
+    {
+        /// <summary>
+        /// Skip migration and log warning-
+        /// </summary>
+        Skip,
+
+        /// <summary>
+        /// Throw an exception and effectively cancel the migration attempt.
+        /// </summary>
+        Error
     }
 }

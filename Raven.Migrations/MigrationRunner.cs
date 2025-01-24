@@ -38,7 +38,14 @@ namespace Raven.Migrations
             }
             if (!canRunMigrations)
             {
-                logger.LogWarning("Skipping migrations because migrations are already running.");
+                if (options.SimultaneousMigrationBehavior == SimultaneousMigrationBehavior.Skip)
+                {
+                    logger.LogWarning("Skipping migrations because migrations are already running.");
+                }
+                else if (options.SimultaneousMigrationBehavior == SimultaneousMigrationBehavior.Error)
+                {
+                    throw new InvalidOperationException("Could not get exclusive lock to run migration");
+                }
             }
             else
             {
